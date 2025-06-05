@@ -1,15 +1,11 @@
-name: Build on PR merge to main
-
 on:
-  push:
-    branches:
-      - master
+  push
 
 jobs:
   diff_check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
