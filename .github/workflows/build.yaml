@@ -1,4 +1,4 @@
-name: Build on PR merge to main
+name: Build
 
 on:
   push:
