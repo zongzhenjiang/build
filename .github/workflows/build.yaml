@@ -38,7 +38,7 @@ jobs:
           echo "Changed packages: ${changed[*]}"
 
           json=$(printf '%s\n' "${changed[@]}" | jq -R . | jq -s .)
-          echo "::set-output name=changed::${json}"
+          echo "changed=$json" >> $GITHUB_OUTPUT
 
       - name: Use changed
         run: |
