@@ -11,7 +11,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: List all top-level folders in current commit
+      - id: list_changed
+        name: List changed
         run: |
           
           BEFORE="${{ github.event.before }}"
@@ -35,3 +36,18 @@ jobs:
           done
 
           echo "Changed packages: ${changed[*]}"
+
+          json=$(printf '%s\n' "${changed[@]}" | jq -R . | jq -s .)
+          echo "::set-output name=changed::$json"
+
+      - name: Use changed
+        run: |
+
+          echo "Changed JSON: ${{ steps.list_changed.outputs.changed }}"
+
+          changed_packages=($(echo '${{ steps.list_changed.outputs.changed }}' | jq -r '.[]'))
+
+          for pkg in "${changed_packages[@]}"; do
+            echo "Build $pkg"
+            pnpm -F "$pkg" run build
+          done 
