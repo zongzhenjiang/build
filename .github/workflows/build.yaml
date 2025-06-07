@@ -46,10 +46,19 @@ jobs:
             echo "has_changed=true" >> $GITHUB_OUTPUT
           fi
 
+      - name: Setup Node.js
+        if: ${{ steps.list_changed.outputs.has_changed == 'true' }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+
       - name: Use changed
         if: ${{ steps.list_changed.outputs.has_changed == 'true' }}
         run: |
-        
+
+          npm install -g pnpm
+          pnpm --version
+
           changed_packages=($(echo '${{ steps.list_changed.outputs.list }}' | jq -r '.[]'))
 
           for project in "${changed_packages[@]}"; do
