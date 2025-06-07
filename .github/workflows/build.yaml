@@ -47,6 +47,12 @@ jobs:
 
           changed_packages=($(echo '${{ steps.list_changed.outputs.changed }}' | jq -r '.[]'))
 
+          if [ ${#changed_packages[@]} -eq 0 ]; then
+            echo "数组为空"
+          else
+            echo "数组不为空"
+          fi
+
           for pkg in "${changed_packages[@]}"; do
             echo "Build $pkg"
           done
