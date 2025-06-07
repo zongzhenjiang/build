@@ -11,8 +11,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Show changed files
+      - name: Show changed
         run: |
           echo "Before commit: ${{ github.event.before }}"
           echo "After commit: ${{ github.sha }}"
           git diff --name-only ${{ github.event.before }} ${{ github.sha }}
+
+      - name: List all top-level folders in current commit
+        run: |
+          for dir in */ ; do
+            if [ -d "$dir" ]; then
+              echo "Found folder: $dir"
+            fi
+          done
