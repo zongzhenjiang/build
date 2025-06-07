@@ -11,17 +11,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Show changed
-        run: |
-          echo "Before commit: ${{ github.event.before }}"
-          echo "After commit: ${{ github.sha }}"
-          git diff --name-only ${{ github.event.before }} ${{ github.sha }}
-
       - name: List all top-level folders in current commit
         run: |
           
           BEFORE="${{ github.event.before }}"
           AFTER="${{ github.sha }}"
+
+          changed=()
 
           for dir in webs/* ; do
             if [ -d "$dir" ]; then
@@ -29,10 +25,12 @@ jobs:
               echo "Found folder: $dir"
 
               if git diff --quiet "$BEFORE" "$AFTER" -- "$dir"; then
-                echo "$dir has NO changes"
+
               else
-                echo "$dir has changes"
+                changed+=("${dir}")
               fi
 
             fi
           done
+
+          echo "Changed packages: ${changed[*]}
