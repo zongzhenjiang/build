@@ -7,6 +7,7 @@ jobs:
   diff_check:
     runs-on: ubuntu-latest
     steps:
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -37,22 +38,25 @@ jobs:
 
           echo "Changed packages: ${changed[*]}"
 
+          if [ ${#changed[@]} -eq 0 ]; then
+            echo "has_changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changed=true" >> $GITHUB_OUTPUT
+          fi
+
           json=$(printf '%s\n' "${changed[@]}" | jq -R . | jq -s . | jq -c .)
-          echo "changed=$json" >> $GITHUB_OUTPUT
+          echo "list=$json" >> $GITHUB_OUTPUT
 
       - name: Use changed
+        if: ${{ steps.check_changed.outputs.has_changed == 'true' }}
         run: |
-
-          echo "Changed JSON: ${{ steps.list_changed.outputs.changed }}"
-
-          changed_packages=($(echo '${{ steps.list_changed.outputs.changed }}' | jq -r '.[]'))
+          changed_packages=($(echo '${{ steps.list_changed.outputs.list }}' | jq -r '.[]'))
 
           if [ ${#changed_packages[@]} -eq 0 ]; then
             echo "数组为空"
           else
-            echo "数组不为空"
+            for project in "${changed_packages[@]}"; do
+              echo "Build $project"
+              cd "$project"
+            done
           fi
-
-          for pkg in "${changed_packages[@]}"; do
-            echo "Build $pkg"
-          done
