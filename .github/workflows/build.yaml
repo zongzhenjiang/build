@@ -19,7 +19,7 @@ jobs:
 
       - name: List all top-level folders in current commit
         run: |
-          for dir in */ ; do
+          for dir in webs/ ; do
             if [ -d "$dir" ]; then
               echo "Found folder: $dir"
             fi
