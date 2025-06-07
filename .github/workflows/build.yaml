@@ -19,8 +19,20 @@ jobs:
 
       - name: List all top-level folders in current commit
         run: |
+          
+          BEFORE="${{ github.event.before }}"
+          AFTER="${{ github.sha }}"
+
           for dir in webs/* ; do
             if [ -d "$dir" ]; then
+            
               echo "Found folder: $dir"
+
+              if git diff --quiet "$BEFORE" "$AFTER" -- "$dir"; then
+                echo "$dir has NO changes"
+              else
+                echo "$dir has changes"
+              fi
+
             fi
           done
