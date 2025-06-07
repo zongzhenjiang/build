@@ -34,4 +34,4 @@ jobs:
             fi
           done
 
-          echo "Changed packages: ${changed[*]}
+          echo "Changed packages: ${changed[*]}"
