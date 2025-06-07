@@ -37,17 +37,16 @@ jobs:
 
           echo "Changed packages: ${changed[*]}"
 
-          json=$(printf '%s\n' "${changed[@]}" | jq -R . | jq -s .)
-          echo "::set-output name=changed::$json"
+          echo "changed=$changed" >> $GITHUB_OUTPUT
 
-      - name: Use changed
-        run: |
+      # - name: Use changed
+      #   run: |
 
-          echo "Changed JSON: ${{ steps.list_changed.outputs.changed }}"
+      #     echo "Changed JSON: ${{ steps.list_changed.outputs.changed }}"
 
-          changed_packages=($(echo '${{ steps.list_changed.outputs.changed }}' | jq -r '.[]'))
+      #     changed_packages=($(echo '${{ steps.list_changed.outputs.changed }}' | jq -r '.[]'))
 
-          for pkg in "${changed_packages[@]}"; do
-            echo "Build $pkg"
-            pnpm -F "$pkg" run build
-          done 
+      #     for pkg in "${changed_packages[@]}"; do
+      #       echo "Build $pkg"
+      #       pnpm -F "$pkg" run build
+      #     done 
