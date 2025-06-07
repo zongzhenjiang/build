@@ -62,8 +62,9 @@ jobs:
           changed_packages=($(echo '${{ steps.list_changed.outputs.list }}' | jq -r '.[]'))
 
           for project in "${changed_packages[@]}"; do
-            echo "Build $project"
+            echo "Building $project"
             cd "$project"
             pnpm install
+            pnpm run build
             ls
           done
