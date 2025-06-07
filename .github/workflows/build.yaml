@@ -47,4 +47,6 @@ jobs:
 
           changed_packages=($(echo '${{ steps.list_changed.outputs.changed }}' | jq -r '.[]'))
 
-          echo "$changed_packages"
+          for pkg in "${changed_packages[@]}"; do
+            echo "Build $pkg"
+          done
