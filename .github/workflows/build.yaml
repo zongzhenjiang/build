@@ -37,7 +37,7 @@ jobs:
 
           echo "Changed packages: ${changed[*]}"
 
-          echo "changed=$changed" >> $GITHUB_OUTPUT
+          echo "changed=$changed[@]" >> $GITHUB_OUTPUT
 
       - name: Use changed
         run: |
