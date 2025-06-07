@@ -44,3 +44,7 @@ jobs:
         run: |
 
           echo "Changed JSON: ${{ steps.list_changed.outputs.changed }}"
+
+          changed_packages=($(echo '${{ steps.list_changed.outputs.changed }}' | jq -r '.[]'))
+
+          echo "$changed_packages"
