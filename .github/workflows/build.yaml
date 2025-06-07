@@ -63,4 +63,5 @@ jobs:
 
           for project in "${changed_packages[@]}"; do
             echo "Build $project"
+            cd "$project"
           done
