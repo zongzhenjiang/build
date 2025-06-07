@@ -48,7 +48,7 @@ jobs:
           echo "list=$json" >> $GITHUB_OUTPUT
 
       - name: Use changed
-        if: ${{ steps.check_changed.outputs.has_changed == 'true' }}
+        if: ${{ steps.list_changed.outputs.has_changed == 'true' }}
         run: |
           changed_packages=($(echo '${{ steps.list_changed.outputs.list }}' | jq -r '.[]'))
 
